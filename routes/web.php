@@ -21,19 +21,6 @@ Route::group(
         'middleware' => [ 'localeSessionRedirect', 'localizationRedirect', 'localeViewPath' ]
     ], function(){ //...
         
-        // Route::group(['prefix' => 'articles'], function() {
-
-        //     Route::get('/', 'ArticlesController@index') -> name('articles.index');
-        //     Route::get('/create', 'ArticlesController@create') -> name('articles.create');
-        //     Route::post('/store', 'ArticlesController@store') -> name('articles.store');
-        //     Route::get('/edit/{id}', 'ArticlesController@edit') -> name('articles.edit');
-        //     Route::post('/update', 'ArticlesController@update') -> name('articles.update');
-        //     Route::get('/delete/{id}', 'ArticlesController@destroy') -> name('articles.delete');
-        //     Route::get('/show/{id}', 'ArticlesController@show') -> name('articles.show');
-        //     Route::get('/categories/{category}', 'ArticlesController@getArticlesByCategory') -> name('articles.by_category');
-            
-        // });
-
         Route::controller(ArticlesController::class)->name('articles.')->group(function () {
             Route::get('/categories/{category}', 'ArticlesController@getArticlesByCategory') -> name('by_category');
         });

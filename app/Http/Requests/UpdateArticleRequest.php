@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CreatePostRequest extends FormRequest
+class UpdateArticleRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,19 +24,9 @@ class CreatePostRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' => 'required',
-            'text' => 'required',
-            'img' => 'required|File::image()->smallerThan(1000)',
+            'title' => 'required|min:40|max:80',
+            'text' => 'required|max:5000',
             'category_id' => 'required',
         ];
-
     }
-        
-    public function messages()
-    {
-        return [
-            'image' => 'tried to upload image that has size small than 1 mb'
-        ];
-    }
-
 }

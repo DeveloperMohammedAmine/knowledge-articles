@@ -51,7 +51,7 @@
 
             <div class="col-md-12 d-flex justify-content-between align-items-center">
                <img class="me-4 rounded" width="100" src="{{ asset('assets/img/blog') }}/{{ $article -> image }}" alt="">
-               <input type="file" name="image" class="form-control" >
+               <input type="file" name="img" class="form-control" >
             </div>
 
             

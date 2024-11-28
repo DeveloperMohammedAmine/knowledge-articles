@@ -54,7 +54,7 @@
             </div>
 
             <div class="col-md-12">
-               <input type="file" name="image" class="form-control @error('image') is-invalid @enderror" >
+               <input type="file" name="img" class="form-control @error('image') is-invalid @enderror" >
                @error('image')
                   <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>

@@ -25,10 +25,6 @@ class ProfilesController extends Controller
         -> with('user', $user);
     }
 
-    
-
-    
-
     /**
      * Show the form for editing the specified resource.
      *
@@ -39,6 +35,7 @@ class ProfilesController extends Controller
     {
         
         $user_id = Auth::user() -> id;
+        
         $user = User::find($user_id);
         return view('profiles.edit')
         -> with('user', $user);

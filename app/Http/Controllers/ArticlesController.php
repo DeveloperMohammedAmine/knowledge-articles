@@ -2,16 +2,26 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use Auth;
 use App\Models\Article;
 use App\Models\Profile;
 use App\Models\Category;
 use App\Traits\saveImage;
-use Auth;
+use Illuminate\Http\Request;
+use App\Services\ArticleService;
+use App\Http\Requests\CreatePostRequest;
+use App\Http\Requests\UpdateArticleUpdate;
+
 class ArticlesController extends Controller
 {
 
     use saveImage;
+
+    protected $articleService;
+
+    public function __construct(ArticleService $articleService) {
+        $this->articleService = $articleService;
+    }
     /**
      * Display a listing of the resource.
      *
@@ -19,7 +29,6 @@ class ArticlesController extends Controller
      */
     public function index()
     {
-
         $articles = Article::with('user') -> with('category') -> orderBy('id', 'desc') -> paginate(12);
         return view('articles.index') -> with('articles', $articles);
     }
@@ -41,39 +50,16 @@ class ArticlesController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CreatePostRequest $request)
     {
 
-        $request -> validate([
-            'title' => 'required',
-            'text' => 'required',
-            'image' => 'required|File::image()->smallerThan(1000)',
-            'category_id' => 'required',
-        ], [
-            'image' => 'tried to upload image that has size small than 1 mb'
-        ]);
-
-
         $image = $this -> saveImage($request -> image, 'assets/img/blog');
+
+        $request['imageName'] = $image;
         
-        $user_id = Auth::user() -> id;
-        
-        Article::create([
-            'title' => $request -> title, 
-            'text' => $request -> text, 
-            'user_id' => $user_id, 
-            'image' => $image, 
-            'category_id' => $request -> category_id,
-        ]);
-
-
-
+        $this->articleService->create($request->all());
 
         return redirect() -> route('user-dashboard.index') -> with('success', 'Article Published Successfully');
-
-
-
-
 
     }
 
@@ -85,11 +71,13 @@ class ArticlesController extends Controller
      */
     public function show($id)
     {
-        $article = Article::with('user') -> with('category') ->find($id);
-        $articles = Article::
-        with('category') ->
-        orderBy('id', 'desc')->take(5) -> get();
-        $categories = Category::with('articles') -> get();
+        
+        $article = $this->articleService->show($id);
+        
+        $articles = $this->articleService->getFiveArticles();
+        
+        $categories = $this->articleService->getCategoriesWithArticles();
+
         return view('articles.show') 
         -> with('article', $article)
         -> with('categories', $categories)
@@ -106,7 +94,9 @@ class ArticlesController extends Controller
     public function edit($id)
     {
         $article = Article::find($id);
+
         $categories = Category::get();
+        
         return view('articles.edit') 
         -> with('article', $article)
         -> with('categories', $categories);
@@ -119,29 +109,17 @@ class ArticlesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request)
+    public function update(UpdateArticleUpdate $request)
     {
-        $request -> validate([
-            'title' => 'required|min:40|max:80',
-            'text' => 'required|max:5000',
-            'category_id' => 'required',
-        ]);
         $article = Article::find($request -> id);
+        
+        $image = $request -> image ? 
+        $this -> saveImage($request -> image, 'assets/img/blog')
+        : $article -> image;
 
-        if($request -> image)
-            $image = $this -> saveImage($request -> image, 'assets/img/blog');
-        else
-            $image = $article -> image;
+        $request['imageName'] = $image;
 
-
-        $article -> update([
-            'title' => $request -> title, 
-            'text' => $request -> text,
-            'image' => $image,
-            'category_id' => $request -> category_id,
-        ]);
-
-
+        $this->articleService->update($article, $request->all());
 
         return redirect() -> route('user-dashboard.index') -> with('success', 'Article Updated Successfully');
         
@@ -152,11 +130,8 @@ class ArticlesController extends Controller
         
         $category_id = Category::select('id') -> where('name', $category) -> get() -> first();
 
-        $articles = Article::with(['user' => function($q) {
-            $q -> select('id', 'name');
-        }]) -> with(['category' => function($q) {
-            $q -> select('id', 'name');
-        }]) -> where('category_id', $category_id -> id) -> paginate(12);
+        $articles = $this->articleService->getArticlesByCategory($category_id);
+
         return view('articles.by-category') -> with('articles', $articles);
 
     }
@@ -172,7 +147,6 @@ class ArticlesController extends Controller
     public function destroy($id)
     {
         $article = Article::find($id) -> delete();
-        
         return redirect() -> back() -> with('success-delete', 'Article Deleted Successfully');
     }
 }

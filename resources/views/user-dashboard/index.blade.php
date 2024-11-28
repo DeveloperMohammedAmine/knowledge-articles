@@ -53,10 +53,14 @@
                   </div>
                </div>
                <div class="articles-actions" style="width: 11%">
-                  <a href="{{ route('articles.show', $article -> id) }}"><span style="width: 65px" class="p-1 btn btn-outline-success mb-1 mt-2" >show</span></a>
-                  <a href="{{ route('articles.edit', $article -> id) }}"><span style="width: 65px" class="p-1 btn btn-outline-info mb-1" >Edit</span></a>
-                  <a href="{{ route('articles.delete', $article -> id) }}"><span style="width: 65px" class="p-1 btn btn-outline-danger" >Delete</span></a>
-               </div>
+                  <a target="_blank" href="{{ route('articles.show', $article->id) }}"><span style="width: 65px" class="p-1 btn btn-outline-success mb-1 mt-2" >show</span></a>
+                  <a target="_blank" href="{{ route('articles.edit', $article->id) }}"><span style="width: 65px" class="p-1 btn btn-outline-info mb-1" >Edit</span></a>
+                  <form action="{{ route('articles.destroy', $article->id) }}" method="POST">
+                      @csrf
+                      @method('DELETE')
+                      <button style="width: 65px" class="p-1 btn btn-outline-danger mb-1" type="submit">Delete</button>
+                  </form>
+                </div>
          </div>
       </div>
 

@@ -21,8 +21,9 @@
    @endif
 
   <div class="col-lg-12 mb-5">
-      <form action="{{ route('articles.update') }}" method="POST" enctype='multipart/form-data'>
+      <form action="{{ route('articles.update', $article->id) }}" method="POST" enctype='multipart/form-data'>
       @csrf
+      @method('PUT')
         <div class="row gy-4">
             <input type="hidden" name="id" value="{{ $article -> id }}">
             <div class="col-md-12">

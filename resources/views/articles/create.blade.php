@@ -21,7 +21,7 @@
         <div class="row gy-4">
 
             <div class="col-md-12">
-               <input  type="text" class="form-control @error('title') is-invalid @enderror" name="title" value="{{ old('title') }}" required autofocus>
+               <input  type="text" class="form-control @error('title') is-invalid @enderror" name="title" value="{{ old('title') }}" placeholder="Title" required autofocus>
                @error('title')
                   <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>

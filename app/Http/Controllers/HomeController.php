@@ -29,8 +29,6 @@ class HomeController extends Controller
 
         $most_writers = User::withCount('articles') -> orderBy('articles_count', 'desc') -> limit(4) -> get();
         return $most_writers;
-
-
     }
 
 

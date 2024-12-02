@@ -1534,7 +1534,7 @@ section {
   transition: 0.3s;
   height: 100%;
   overflow: hidden;
-  padding: 20px;
+  padding: 16px;
   border-radius: 8px;
   position: relative;
 }
@@ -1550,7 +1550,7 @@ section {
 }
 
 .recent-blog-posts .post-box .post-date {
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 600;
   color: rgba(1, 41, 112, 0.6);
   display: block;
@@ -1566,10 +1566,10 @@ section {
 }
 
 .recent-blog-posts .post-box .post-title {
-  font-size: 18px;
-  height: 58px;
+  font-size: 16px;
+  line-height: 1.4;
   color: #012970;
-  font-weight: 700;
+  font-weight: 600;
   margin-bottom: 18px;
   position: relative;
   transition: 0.3s;

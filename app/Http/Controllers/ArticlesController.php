@@ -140,9 +140,11 @@ class ArticlesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Article $article)
     {
-        $article = Article::find($id) -> delete();
-        return redirect() -> back() -> with('success-delete', 'Article Deleted Successfully');
+        $article->delete();
+        return redirect()->back()->with('success-delete', 'Article Deleted Successfully');
+
+        return response()->json();
     }
 }

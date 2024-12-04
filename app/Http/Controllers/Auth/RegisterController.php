@@ -65,14 +65,11 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        $user_id = User::select('id') -> orderBy('id', 'desc') -> first();
-        $user_id = !empty($user_id) ?  $user_id -> id : 0;
-        Profile::create([]);
+
 
         return User::create([
             'name' => $data['name'],
             'email' => $data['email'],
-            'profile_id' => $user_id + 1,
             'password' => Hash::make($data['password']),
         ]);
 

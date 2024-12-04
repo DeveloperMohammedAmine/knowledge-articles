@@ -45,11 +45,11 @@ class User extends Authenticatable
 
 
     public function articles() {
-        return $this -> hasMany('App\Models\Article', 'user_id', 'id');
+        return $this -> hasMany(Article::class, 'user_id', 'id');
     }
 
     public function profile() {
-        return $this -> belongsTo('App\Models\Profile', 'profile_id');
+        return $this->hasOne(Profile::class);
     }
 
 

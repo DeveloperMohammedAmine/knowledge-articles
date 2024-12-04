@@ -21,11 +21,16 @@ class Article extends Model
     ];
 
     public function user() {
-        return $this -> belongsTo('App\Models\User', 'user_id', 'id');
+        return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
     public function category() {
-        return $this -> belongsTo('App\Models\Category', 'category_id', 'id');
+        return $this->belongsTo(Category::class, 'category_id', 'id');
+    }
+
+
+    public function tags() {
+        return $this->belongsToMany(Tag::class);
     }
 
 

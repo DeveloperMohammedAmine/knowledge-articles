@@ -16,13 +16,10 @@ return new class extends Migration
         Schema::create('articles', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->string('text');
+            $table->text('text');
             $table->string('image');
             $table->foreignId('user_id')->constrained()->onDelete('cascade')->onUpdate('cascade');
             $table->foreignId('category_id')->constrained()->onDelete('cascade')->onUpdate('cascade');
-
-
-
             $table->timestamps();
         });
     }

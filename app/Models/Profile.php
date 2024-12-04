@@ -21,7 +21,7 @@ class Profile extends Model
     public $timestamps = false;
 
     public function user() {
-        return $this -> hasOne('App\Models\User');
+        return $this->belongsTo(User::class);
     }
 
 

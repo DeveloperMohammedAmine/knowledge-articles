@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Profile;
+use Illuminate\Http\Request;
+
 class HomeController extends Controller
 {
     /**
@@ -18,17 +20,12 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        $most_writers = User::with('profile')->withCount('articles')->orderBy('articles_count', 'desc')->limit(4)->get();
+        return view('home', compact("most_writers"));
     }
 
     public function contact() {
         return view('contact');
-    }
-
-    static public function getMostWriters() {
-
-        $most_writers = User::withCount('articles') -> orderBy('articles_count', 'desc') -> limit(4) -> get();
-        return $most_writers;
     }
 
 
